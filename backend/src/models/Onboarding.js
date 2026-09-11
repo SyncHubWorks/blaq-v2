@@ -13,9 +13,11 @@ const onboardigSchema = new Schema(
     // BUSINESS DETAILS
     businessName: {
       type: String,
+      default: "",
     },
     businessType: {
       type: String,
+      default: "",
     },
     moreBusinesses: {
       type: Boolean,
@@ -28,42 +30,47 @@ const onboardigSchema = new Schema(
     },
     businessExp: {
       type: String,
+      default: "",
     },
 
     // BUSINESS ACTIVITY
     PayingClientsPM: {
       type: String,
+      default: "",
     },
     ClientExpectedPayment: {
       type: String,
+      default: "",
     },
     MontlyBusinessSpending: {
       type: String,
+      default: "",
     },
 
     // BUSINESS OPERATION
     workFrom: {
       type: String,
+      default: "",
     },
     blaqFacilities: {
       type: String,
+      default: "",
     },
 
     // BLAQ RESOURCES
-    resourcesToUse: [
-      {
-        type: String,
-      },
-    ],
-    setBacks: [
-      {
-        type: String,
-      },
-    ],
+    resourcesToUse: {
+      type: [String],
+      default: [],
+    },
+    setBacks: {
+      type: [String],
+      default: [],
+    },
 
     // BLACK ACCESS
     howToAccessBlaq: {
       type: String,
+      default: "",
     },
     interestedInBlaq: {
       type: Boolean,
@@ -73,9 +80,15 @@ const onboardigSchema = new Schema(
     // USER GOAL
     targetBusinessGoal: {
       type: String,
+      default: "",
     },
     businessSocialMediaLink: {
       type: String,
+      default: "",
+    },
+    businessCompleted: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true },

@@ -6,6 +6,9 @@ import cookieParser from "cookie-parser";
 import { ENV } from "./config/env.js";
 import { connectDb } from "./config/db.js";
 
+import authRoutes from "./routes/auth.route.js";
+import onboardingRoutes from "./routes/onboarding.route.js";
+
 const app = express();
 const { PORT, FRONTEND_URL } = ENV;
 
@@ -27,6 +30,8 @@ app.get("/health", (_req, res) => {
 });
 
 // API ROUTES
+app.use("/api/auth", authRoutes);
+app.use("/api/onboarding", onboardingRoutes);
 
 // Connect DB then start the server
 connectDb().then(() => {

@@ -8,7 +8,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    MobileNo: {
+    mobileNo: {
       type: String,
     },
     location: {
@@ -16,6 +16,16 @@ const userSchema = new Schema(
     },
     ageRange: {
       type: String,
+    },
+    profilePic: {
+      public_url: {
+        type: String,
+        default: "",
+      },
+      secure_url: {
+        type: String,
+        default: "",
+      },
     },
     email: {
       type: String,
@@ -29,6 +39,11 @@ const userSchema = new Schema(
     onBoarded: {
       type: Boolean,
       default: false,
+    },
+    role: {
+      type: String,
+      enum: ["user", "business", "admin"],
+      default: "user",
     },
   },
   { timestamps: true },
