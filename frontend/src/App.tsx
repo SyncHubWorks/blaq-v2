@@ -10,6 +10,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
+import OnboardingPage from "./pages/onboarding/OnboardingPage";
 
 function App() {
   return (
@@ -19,12 +20,15 @@ function App() {
         {/* PUBLIC ROUTES */}
         <Route index element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
+
+        {/* AUTH ROUTES */}
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
 
         {/* PROTECTED ROUTES */}
+        <Route path="/onboarding" element={<OnboardingPage />} />
 
         {/* FALLBACK ROUTES */}
         <Route path="*" element={<ErrorPage />} />
