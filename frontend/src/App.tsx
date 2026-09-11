@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router";
 import { Toaster } from "react-hot-toast";
 
-import HomePage from "./pages/HomePage";
-import AboutPage from "./pages/AboutPage";
+// import HomePage from "./pages/HomePage";
+import AboutPage from "./pages/unathorized/AboutPage";
 import SignupPage from "./pages/auth/SignupPage";
 import LoginPage from "./pages/auth/LoginPage";
 import ErrorPage from "./pages/ErrorPage";
@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
 import OnboardingPage from "./pages/onboarding/OnboardingPage";
+import LandingPage from "./pages/unathorized/LandingPage";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
       <Navbar />
       <Routes>
         {/* PUBLIC ROUTES */}
-        <Route index element={<HomePage />} />
+        <Route index element={<LandingPage />} />
         <Route path="/about" element={<AboutPage />} />
 
         {/* AUTH ROUTES */}
