@@ -1,5 +1,5 @@
-import Onboarding from "../models/Onboarding.js";
-import User from "../models/user.js";
+import User from "../models/user.model.js";
+import Onboarding from "../models/onboarding.model.js";
 
 export const completeBusinessOnboarding = async (req, res) => {
   try {

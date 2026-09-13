@@ -2,10 +2,10 @@ import validator from "validator";
 import bcrypt from "bcryptjs";
 // import crypto from "crypto";
 
-import User from "../models/user.js";
 // import { ENV } from "../config/env.js";
 import { generateToken } from "../config/generateToken.js";
-import Onboarding from "../models/Onboarding.js";
+import User from "../models/user.model.js";
+import Onboarding from "../models/onboarding.model.js";
 
 // import {
 //   sendWelcomeEmail,
