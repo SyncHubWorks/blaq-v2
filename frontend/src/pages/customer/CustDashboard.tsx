@@ -8,6 +8,7 @@ import {
   Search,
   Star,
 } from "lucide-react";
+import { useAuthStore } from "../../store/useAuthStore";
 
 // Upcoming bookings shown in the list
 const upcomingBookings = [
@@ -42,15 +43,16 @@ const recommended = [
 ];
 
 function CustDashboard() {
+  const { user } = useAuthStore();
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-
         {/* Header */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-2xl font-semibold text-gray-900">
-              Welcome back, Sipho
+              Welcome back, {user?.fullName}
             </h1>
             <p className="mt-1 text-sm text-gray-500">
               Here's what's happening with your bookings.
@@ -99,7 +101,6 @@ function CustDashboard() {
 
         {/* Two columns */}
         <div className="mt-8 grid gap-6 lg:grid-cols-3">
-
           {/* Upcoming bookings */}
           <div className="rounded-2xl border border-gray-200 bg-white lg:col-span-2">
             <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
@@ -129,10 +130,11 @@ function CustDashboard() {
                     </p>
                   </div>
                   <span
-                    className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-medium ${booking.status === "Confirmed"
+                    className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-medium ${
+                      booking.status === "Confirmed"
                         ? "bg-gray-900 text-white"
                         : "bg-gray-100 text-gray-700"
-                      }`}
+                    }`}
                   >
                     {booking.status}
                   </span>

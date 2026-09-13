@@ -1,39 +1,30 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { Lock, Mail, User } from "lucide-react";
+import toast from "react-hot-toast";
+import { useAuthStore } from "../../store/useAuthStore";
 
 function SignupPage() {
-  // Hold what the user types
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
-  // Holds an error message to show the user (empty = no error)
-  const [error, setError] = useState("");
-
-  // Used to redirect after a successful signup
-  const navigate = useNavigate();
+  const { isSigningUp, signup } = useAuthStore();
 
   function handleSubmit(e: React.FormEvent) {
-    e.preventDefault(); // stop the page from refreshing
+    e.preventDefault();
 
     // Check that both passwords match
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      toast.error("Passwords does not match");
       return;
     }
 
-    // Clear any previous error
-    setError("");
-
-    // For now, just log the values. Replace this with a real signup later.
-    console.log("Full name:", fullName);
-    console.log("Email:", email);
-    console.log("Password:", password);
-
-    // Send the user to the dashboard after signup
-    navigate("/dashboard");
+    signup({
+      fullName,
+      email,
+      password: confirmPassword,
+    });
   }
 
   return (
@@ -146,19 +137,13 @@ function SignupPage() {
               </div>
             </div>
 
-            {/* Error message (only shows when there is one) */}
-            {error && (
-              <p className="rounded-lg bg-gray-100 px-3 py-2 text-sm text-gray-700">
-                {error}
-              </p>
-            )}
-
             {/* Submit button */}
             <button
               type="submit"
-              className="h-10 w-full rounded-lg bg-gray-900 text-sm font-medium text-white transition hover:bg-gray-800"
+              disabled={isSigningUp}
+              className="h-10 w-full rounded-lg bg-gray-900 text-sm font-medium text-white transition hover:bg-gray-800 cursor-pointer"
             >
-              Create account
+              {isSigningUp ? "Creating account..." : "Create account"}
             </button>
           </form>
 

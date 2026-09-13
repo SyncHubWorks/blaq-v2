@@ -1,25 +1,17 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { Lock, Mail } from "lucide-react";
+import { useAuthStore } from "../../store/useAuthStore";
 
 function LoginPage() {
-  // Hold what the user types
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { login, isLoggingIn } = useAuthStore();
 
-  // Used to redirect after a successful login
-  const navigate = useNavigate();
-
-  // Runs when the form is submitted
   function handleSubmit(e: React.FormEvent) {
-    e.preventDefault(); // stop the page from refreshing
+    e.preventDefault();
 
-    // For now, just log the values. Replace this with real login later.
-    console.log("Email:", email);
-    console.log("Password:", password);
-
-    // Send the user to the dashboard after login
-    navigate("/dashboard");
+    login({ email, password });
   }
 
   return (
@@ -99,9 +91,10 @@ function LoginPage() {
             {/* Submit button */}
             <button
               type="submit"
-              className="h-10 w-full rounded-lg bg-gray-900 text-sm font-medium text-white transition hover:bg-gray-800"
+              disabled={isLoggingIn}
+              className="h-10 w-full rounded-lg bg-gray-900 text-sm font-medium text-white transition hover:bg-gray-800 cursor-pointer"
             >
-              Sign in
+              {isLoggingIn ? "Signing in..." : "Sign in"}
             </button>
           </form>
 

@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 import { Toaster } from "react-hot-toast";
 
 // import HomePage from "./pages/HomePage";
@@ -13,25 +13,54 @@ import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
 import OnboardingPage from "./pages/onboarding/OnboardingPage";
 import LandingPage from "./pages/unathorized/LandingPage";
 import Dashboard from "./pages/Dashboard";
+import { useAuthStore } from "./store/useAuthStore";
+import { useEffect } from "react";
 
 function App() {
+  const { checkAuth, user } = useAuthStore();
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
   return (
     <>
       <Navbar />
       <Routes>
         {/* PUBLIC ROUTES */}
-        <Route index element={<LandingPage />} />
+        <Route
+          index
+          element={!user ? <LandingPage /> : <Navigate to="/dashboard" />}
+        />
         <Route path="/about" element={<AboutPage />} />
 
         {/* AUTH ROUTES */}
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route
+          path="/signup"
+          element={!user ? <SignupPage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/login"
+          element={!user ? <LoginPage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/forgot-password"
+          element={!user ? <ForgotPasswordPage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/reset-password"
+          element={!user ? <ResetPasswordPage /> : <Navigate to="/" />}
+        />
 
         {/* PROTECTED ROUTES */}
-        <Route path="/onboarding" element={<OnboardingPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route
+          path="/onboarding"
+          element={user ? <OnboardingPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/dashboard"
+          element={user ? <Dashboard /> : <Navigate to="/login" />}
+        />
 
         {/* FALLBACK ROUTES */}
         <Route path="*" element={<ErrorPage />} />

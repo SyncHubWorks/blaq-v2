@@ -11,6 +11,7 @@ import {
   UserPlus,
   Users,
 } from "lucide-react";
+import { useAuthStore } from "../../store/useAuthStore";
 
 // Today's appointments for the owner
 const todayAppointments = [
@@ -59,15 +60,16 @@ const recentClients = [
 ];
 
 function BusinessDashboard() {
+  const { user } = useAuthStore();
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-
         {/* Header */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-2xl font-semibold text-gray-900">
-              Welcome back, Blaq Cuts
+              Welcome back, {user?.fullName}
             </h1>
             <p className="mt-1 text-sm text-gray-500">
               You have 4 appointments today.
@@ -95,7 +97,11 @@ function BusinessDashboard() {
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
             { label: "Today's bookings", value: "4", icon: Calendar },
-            { label: "This week's earnings", value: "R4,860", icon: DollarSign },
+            {
+              label: "This week's earnings",
+              value: "R4,860",
+              icon: DollarSign,
+            },
             { label: "Active clients", value: "128", icon: Users },
             { label: "Avg. rating", value: "4.8", icon: Star },
           ].map((stat) => (
@@ -142,7 +148,6 @@ function BusinessDashboard() {
 
         {/* Two columns */}
         <div className="mt-8 grid gap-6 lg:grid-cols-3">
-
           {/* Today's appointments */}
           <div className="rounded-2xl border border-gray-200 bg-white lg:col-span-2">
             <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
@@ -181,10 +186,11 @@ function BusinessDashboard() {
                       {appt.time}
                     </span>
                     <span
-                      className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${appt.status === "Confirmed"
+                      className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${
+                        appt.status === "Confirmed"
                           ? "bg-gray-900 text-white"
                           : "bg-gray-100 text-gray-700"
-                        }`}
+                      }`}
                     >
                       {appt.status}
                     </span>
@@ -196,7 +202,6 @@ function BusinessDashboard() {
 
           {/* Right column */}
           <div className="space-y-6">
-
             {/* Services */}
             <div className="rounded-2xl border border-gray-200 bg-white">
               <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
