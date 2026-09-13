@@ -12,6 +12,7 @@ import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
 import OnboardingPage from "./pages/onboarding/OnboardingPage";
 import LandingPage from "./pages/unathorized/LandingPage";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
 
         {/* PROTECTED ROUTES */}
         <Route path="/onboarding" element={<OnboardingPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
 
         {/* FALLBACK ROUTES */}
         <Route path="*" element={<ErrorPage />} />
