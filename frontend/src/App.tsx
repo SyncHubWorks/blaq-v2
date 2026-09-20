@@ -1,70 +1,147 @@
 import { Navigate, Route, Routes } from "react-router";
 import { Toaster } from "react-hot-toast";
+import { useEffect } from "react";
 
-// import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/unathorized/AboutPage";
 import SignupPage from "./pages/auth/SignupPage";
 import LoginPage from "./pages/auth/LoginPage";
-import ErrorPage from "./pages/ErrorPage";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
-import OnboardingPage from "./pages/onboarding/OnboardingPage";
+
 import LandingPage from "./pages/unathorized/LandingPage";
+import OnboardingPage from "./pages/onboarding/OnboardingPage";
 import Dashboard from "./pages/Dashboard";
+import ErrorPage from "./pages/ErrorPage";
+
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+
 import { useAuthStore } from "./store/useAuthStore";
-import { useEffect } from "react";
 
 function App() {
-  const { checkAuth, user } = useAuthStore();
+  const { checkAuth, user, isCheckingAuth } = useAuthStore();
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
 
+  if (isCheckingAuth) {
+    return <div>Loading...</div>;
+  }
+
+  const isAuthenticated = Boolean(user);
+  const isAdmin = user?.role === "admin";
+
+  // Admins don't need onboarding.
+  const needsOnboarding = isAuthenticated && !isAdmin && !user?.onBoarded;
+
   return (
     <>
       <Navbar />
+
       <Routes>
-        {/* PUBLIC ROUTES */}
+        {/* ==================== PUBLIC ==================== */}
+
         <Route
           index
-          element={!user ? <LandingPage /> : <Navigate to="/dashboard" />}
+          element={
+            !isAuthenticated ? (
+              <LandingPage />
+            ) : needsOnboarding ? (
+              <Navigate to="/onboarding" replace />
+            ) : (
+              <Navigate to="/dashboard" replace />
+            )
+          }
         />
+
         <Route path="/about" element={<AboutPage />} />
 
-        {/* AUTH ROUTES */}
+        {/* ==================== AUTH ==================== */}
+
         <Route
           path="/signup"
-          element={!user ? <SignupPage /> : <Navigate to="/" />}
+          element={
+            !isAuthenticated ? (
+              <SignupPage />
+            ) : (
+              <Navigate to="/dashboard" replace />
+            )
+          }
         />
+
         <Route
           path="/login"
-          element={!user ? <LoginPage /> : <Navigate to="/" />}
+          element={
+            !isAuthenticated ? (
+              <LoginPage />
+            ) : needsOnboarding ? (
+              <Navigate to="/onboarding" replace />
+            ) : (
+              <Navigate to="/dashboard" replace />
+            )
+          }
         />
+
         <Route
           path="/forgot-password"
-          element={!user ? <ForgotPasswordPage /> : <Navigate to="/" />}
+          element={
+            !isAuthenticated ? (
+              <ForgotPasswordPage />
+            ) : (
+              <Navigate to="/dashboard" replace />
+            )
+          }
         />
+
         <Route
           path="/reset-password"
-          element={!user ? <ResetPasswordPage /> : <Navigate to="/" />}
+          element={
+            !isAuthenticated ? (
+              <ResetPasswordPage />
+            ) : (
+              <Navigate to="/dashboard" replace />
+            )
+          }
         />
 
-        {/* PROTECTED ROUTES */}
+        {/* ==================== ONBOARDING ==================== */}
+
         <Route
           path="/onboarding"
-          element={user ? <OnboardingPage /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/dashboard"
-          element={user ? <Dashboard /> : <Navigate to="/login" />}
+          element={
+            !isAuthenticated ? (
+              <Navigate to="/login" replace />
+            ) : isAdmin ? (
+              <Navigate to="/dashboard" replace />
+            ) : user?.onBoarded ? (
+              <Navigate to="/dashboard" replace />
+            ) : (
+              <OnboardingPage />
+            )
+          }
         />
 
-        {/* FALLBACK ROUTES */}
+        {/* ==================== PROTECTED ==================== */}
+
+        <Route
+          path="/dashboard"
+          element={
+            !isAuthenticated ? (
+              <Navigate to="/login" replace />
+            ) : needsOnboarding ? (
+              <Navigate to="/onboarding" replace />
+            ) : (
+              <Dashboard />
+            )
+          }
+        />
+
+        {/* ==================== FALLBACK ==================== */}
+
         <Route path="*" element={<ErrorPage />} />
       </Routes>
+
       <Footer />
 
       <Toaster />

@@ -7,7 +7,7 @@ export interface IUser {
   _id: string;
   fullName: string;
   email: string;
-  onBoarded: true;
+  onBoarded: boolean;
   role: UserRole;
   createdAt: string;
   updatedAt: string;
